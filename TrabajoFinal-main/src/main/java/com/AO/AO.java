@@ -1,4 +1,4 @@
-package com.AV;
+package com.AO;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,10 +12,10 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.FsAction;
 import org.apache.hadoop.fs.permission.FsPermission;
 
-public class AV {
+public class AO {
 	
-	private static String nuevaCarpeta = "";
-	private static String nombreArchivo = "";
+	private static String nCarpeta = "";
+	private static String nArchivo = "";
 	private static String contenido = "";
 	private static int opcion = 0;
 	private static int opcion1 = 0;
@@ -40,11 +40,9 @@ public class AV {
 		
 		do {
 			
-		System.out.println("__________________________________________________________________ ");	
-		System.out.println("|     Ingrese el numero correspondiente a la accion a realizar    |");
-		System.out.println("|                 Crear  un Archivo = 1                           |");
-		System.out.println("|                 Borrar un Archivo = 2                           |");
-		System.out.println("|_________________________________________________________________|");	
+		System.out.println("  Ingrese el numero correspondiente a la accion a realizar    ");
+		System.out.println("                 Crear Archivo = 1                            ");
+		System.out.println("                 Borrar Archivo = 2                           ");	
 		opcion = sc.nextInt();
 		
 			
@@ -56,27 +54,21 @@ public class AV {
 					
 					FileSystem fs= FileSystem.get(conf);
 					String home = fs.getHomeDirectory().toString();
-					
-					System.out.println(" _________________________________________________________________");	
-					System.out.println("|                 Ingresa nombre de la carpeta                    |");
-					System.out.println("|_________________________________________________________________|");	
+						
+					System.out.println("                 Ingresa nombre de la carpeta                    ");
 					nuevaCarpeta = datos.nextLine();
 					
-					if (!fs.exists(new Path(home + "/" + nuevaCarpeta))) {
-						fs.mkdirs(new Path(home + "/" + nuevaCarpeta));
+					if (!fs.exists(new Path(home + "/" + nCarpeta))) {
+						fs.mkdirs(new Path(home + "/" + nCarpeta));
 					}
 					
-					System.out.println(" _________________________________________________________________");	
 					System.out.println("|                 Ingresa nombre del archivo                      |");
-					System.out.println("|_________________________________________________________________|");
 					nombreArchivo = datos.nextLine();
 					
-					Path rutaArchivo = new Path(home + "/" + nuevaCarpeta + "/" + nombreArchivo);
+					Path rutaArchivo = new Path(home + "/" + nCarpeta + "/" + nArchivo);
 					FSDataOutputStream outputStream = null;
-					
-					System.out.println(" _________________________________________________________________");	
-					System.out.println("|                 Ingresa contenido del archivo                   |");
-					System.out.println("|_________________________________________________________________|");
+						
+					System.out.println("               Dame contenido del archivo                   ");
 					contenido = datos.nextLine();
 					
 					if (!fs.exists(rutaArchivo)) {
@@ -84,34 +76,28 @@ public class AV {
 						outputStream.writeBytes(contenido);
 						outputStream.close();
 						
-						System.out.println(" Archivo creado en la ruta: "+ rutaArchivo);
-						System.out.println(" _________________________________________________________________");	
-						System.out.println("|                 ¿Deseas cambiar el dueño del archivo?           |");
-						System.out.println("|                    Si = 1       NO= cualquier numero            |");
-						System.out.println("|_________________________________________________________________|");
+						System.out.println(" Archivo creado en la ruta: "+ rutaArchivo);	
+						System.out.println("                Â¿Deseas cambiar el dueÃ±o del archivo?           ");
+						System.out.println("                  Si = 1       NO= cualquier numero            ");
 						opcion1 = datos.nextInt();
 						if(opcion1 == 1) {
 						Scanner sc1 = new Scanner (System.in);
 					
-						System.out.println("Ingresa el usuario dueño");
+						System.out.println("Ingresa el usuario dueÃ±o");
 						user = sc1.nextLine();
 						
 						fs.setOwner(rutaArchivo, user,null);
-					}
-						System.out.println(" _________________________________________________________________");	
-						System.out.println("|                 ¿Deseas cambiar permisos?                       |");
+					}	
+						System.out.println("|                 Â¿Deseas editar permisos?                       |");
 						System.out.println("|                    Si = 1       NO= cualquier numero            |");
-						System.out.println("|_________________________________________________________________|");
 						opcion1 = datos.nextInt();
 						if(opcion1 == 1) {
-							Scanner sc2 = new Scanner (System.in);
-							System.out.println(" _________________________________________________________________");	
-							System.out.println("|                 ¿Que permisos desea?                            |");
-							System.out.println("|                Todos     = 1               Ninguno   = 2        |");
-							System.out.println("|                Ejecutar  = 3               Lectura   = 4        |");
-							System.out.println("|      Lectura y Ejecutar  = 5               Escritura = 6        |");
-							System.out.println("|      Lectura y Escritura = 7   Escritura y Ejecutar  = 8        |");
-							System.out.println("|_________________________________________________________________|");
+							Scanner sc2 = new Scanner (System.in);	
+							System.out.println("                 Â¿Que permisos desea?                            ");
+							System.out.println("            Todos     = 1               Ninguno   = 2        ");
+							System.out.println("            Ejecutar  = 3               Lectura   = 4        ");
+							System.out.println("      Lectura y Ejecutar  = 5           Escritura = 6        ");
+							System.out.println("      Lectura y Escritura = 7      Escritura y Ejecutar  = 8        ");
 							opcion2 = sc2.nextInt();
 							switch(opcion2) {
 							case 1:fs.setPermission(rutaArchivo, new FsPermission(FsAction.ALL, FsAction.ALL, FsAction.ALL) );
@@ -130,7 +116,7 @@ public class AV {
 								break;
 							case 8:fs.setPermission(rutaArchivo, new FsPermission(FsAction.WRITE_EXECUTE, FsAction.WRITE_EXECUTE, FsAction.WRITE_EXECUTE) );
 								break;
-							default :System.out.println("Numero no valido");
+							default :System.out.println("Numero invalido");
 							}
 						}
 						}
